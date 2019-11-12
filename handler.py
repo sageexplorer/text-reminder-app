@@ -41,7 +41,6 @@ def lambda_handler(event, context):
         id = str(uuid.uuid1())
         date_ = date.replace('T', ' ')
         pattern = '%Y-%m-%d %H:%M'
-        
         epoch_ = ''.join(date_.split())[:-3]
         
         """ This is current time """
@@ -56,7 +55,7 @@ def lambda_handler(event, context):
         }
     """ if the source doesn't have the right header, then just check the table to see if the record exists """
     else:
-  
+    """ Send a SNS message if the record exists """
        table = dynamodb.Table('iots')
        response = table.get_item(Key={'time': time_ })
        try:
@@ -72,6 +71,5 @@ def lambda_handler(event, context):
            print('this will also show up in cloud watch')
            logger.info('got event{}'.format(event))
            sns.publish(PhoneNumber=phone, Message=message)
-             
        else:
            print("Something went wrong")
