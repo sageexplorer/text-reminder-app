@@ -44,23 +44,17 @@ def lambda_handler(event, context):
         
         epoch_ = ''.join(date_.split())[:-3]
         
-        '''This is current time'''
+        """ This is current time """
         ts = str(int(datetime.datetime.now().timestamp())-28800)
         print(epoch_)
-
-        '''If when cloudwatch event fires, if there is a record in DynamoDB,then send a message'''
-        
-        table = dynamodb.Table('iots')
-        response = table.get_item(Key={'time': time_})
-        
-        ''' Add item to the table if the source is not cloudwatch'''
+        """ Add item to the table if the source is not cloudwatch event """
         dynamo.put_item(TableName='iots',Item={'id':{'S':id}, 'time':{'S':epoch_}, 'usr_time':{'S':time_}, 'message':{'S':message}, 'phone':{'S':phone}})
     
         return { 
             'statusCode': 200, 
             'body': 'Thank you for the response' 
         }
-    '''If the event source doesn't have the right header, then just check the table to see if the record exists'''    
+    """ if the source doesn't have the right header, then just check the table to see if the record exists """
     else:
   
        table = dynamodb.Table('iots')
