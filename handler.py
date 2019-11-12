@@ -42,10 +42,7 @@ def lambda_handler(event, context):
         date_ = date.replace('T', ' ')
         pattern = '%Y-%m-%d %H:%M'
         epoch_ = ''.join(date_.split())[:-3]
-        
-        """ This is current time """
-        ts = str(int(datetime.datetime.now().timestamp())-28800)
-        print(epoch_)
+
         """ Add item to the table if the source is not cloudwatch event """
         dynamo.put_item(TableName='iots',Item={'id':{'S':id}, 'time':{'S':epoch_}, 'usr_time':{'S':time_}, 'message':{'S':message}, 'phone':{'S':phone}})
     
