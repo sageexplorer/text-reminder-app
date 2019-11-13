@@ -59,11 +59,10 @@ def lambda_handler(event, context):
            item = response['Item']
            phone = response['Item']['phone']
            message = response['Item']['message']
-       except KeyError as error:
+       except (KeyError, TypeError) as error:
            print(error)
            item = None
-       except TypeError:
-           item = None 
+
        if item != None:
            print('this will also show up in cloud watch')
            logger.info('got event{}'.format(event))
