@@ -44,7 +44,12 @@ def lambda_handler(event, context):
         epoch_ = ''.join(date_.split())[:-3]
 
         """ Add item to the table if the source is not cloudwatch event """
-        dynamo.put_item(TableName='iots',Item={'id':{'S':id}, 'time':{'S':epoch_}, 'usr_time':{'S':time_}, 'message':{'S':message}, 'phone':{'S':phone}})
+        dynamo.put_item(TableName='iots',
+                        Item={'id':{'S':id},
+                        'time':{'S':epoch_},
+                        'usr_time':{'S':time_}, 
+                        'message':{'S':message}, 
+                        'phone':{'S':phone}})
     
         return { 
             'statusCode': 200, 
