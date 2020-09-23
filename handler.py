@@ -49,7 +49,6 @@ def lambda_handler(event, context):
         
         
         def get_dates(date_):
-
             time_ = date_
             hour =  time_[-2:]
         
