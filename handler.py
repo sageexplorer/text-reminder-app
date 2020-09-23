@@ -46,44 +46,35 @@ def lambda_handler(event, context):
         pattern = '%Y-%m-%d %H:%M'
         epoch_ = ''.join(date_.split())[:-3]
         id = str(uuid.uuid1())
-        
-        
+               
         def get_dates(date_):
             time_ = date_
-            hour =  time_[-2:]
-        
-            for x in range(1,5):
-                
+            hour =  time_[-2:]        
+            for x in range(1,5):                
                 date_time_obj = datetime.datetime.strptime(time_, '%Y-%m-%d%H%f')
-                new_date = date_time_obj+ datetime.timedelta(days=1)
-            
-                next_date = new_date.strftime("%Y-%m-%d")
-        
+                new_date = date_time_obj+ datetime.timedelta(days=1)            
+                next_date = new_date.strftime("%Y-%m-%d")        
                 next_date_time = next_date + hour 
                 time_ = str(next_date_time)
                 id = str(uuid.uuid1())
                 dynamo.put_item(TableName='iots',Item={'id':{'S':id}, 'time':{'S':time_},'repeat': {'S': repeat}, 'firstname': {'S': name}, 'usr_time':{'S':time_}, 'message':{'S':message}, 'phone':{'S':phone}})
-
         
         try:
             repeat = str(event["queryStringParameters"]['repeat'])
         except:
-            repeat = "none"
-   
+            repeat = "none"  
 
         """ Add item to the table if the source is not cloudwatch event """
         if repeat != 'reccuring':
             dynamo.put_item(TableName='iots',Item={'id':{'S':id}, 'time':{'S':epoch_},'repeat': {'S': repeat}, 'firstname': {'S': name}, 'usr_time':{'S':time_}, 'message':{'S':message}, 'phone':{'S':phone}})
         else:
-            get_dates(epoch_)
-            
+            get_dates(epoch_)           
         return { 
             'statusCode': 200, 
             'body': 'Thank you for the response' 
         }
      
-    else:
-         
+    else:         
       try:
           table = dynamodb.Table('iots')
           response = table.get_item(Key={'time': epoch_ })
