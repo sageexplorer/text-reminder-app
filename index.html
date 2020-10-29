@@ -1,27 +1,102 @@
 <!DOCTYPE html>
-<html>
-<body>
-
-<h2>Send Text Message</h2>
-
-<form action="">
-  First name:<br>
-  <input type="text" name="firstname" value="Mickey">
-  <br><br>
-  phone:<br>
-  <input type="text" name="phone" value="phone">
-  <br><br>
-  Message:<br>
-  <input type="text" name="message" value="message">
-  <br><br>
-  Date:<br>
-  <input type="datetime-local" name="date" value="date">
-  <br><br>
-  <br>
-  <input type="submit" value="Submit">
-</form> 
-
-<p>Click submit to send a message</p>
-
-</body>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <title>Infographics</title>
+      <!-- Include Google fonts: Frijole, Open Sans, Oswald -->
+      <link href="https://fonts.googleapis.com/css?family=Frijole|Open+Sans|Oswald&display=swap" rel="stylesheet">
+      <!-- Normalize browser styles -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+      <link href="app.css" rel="stylesheet">
+      <!-- Link to app.js with defer till HTML render -->
+      <!-- <script defer src="app.js"></script> -->
+   </head>
+   <body>
+      <header>
+         <h1>Messaging App</h1>
+         <h3> Remind yourself, or others via Text </h3>
+      </header>
+      <!-- Form to get user input -->
+      <form id="dino-compare" action="https://1h3zbhov97.execute-api.us-west-1.amazonaws.com/stg" nonvalidate>
+         <div class="form-container">
+            <p>
+               First name:
+               <input type="text" class="form-field__full" name="firstname" >
+            </p>
+            <p>
+               phone:
+               <input type="text" class="form-field__full"  name="phone" >
+            </p>
+            <p>
+               Message:
+               <input type="text"  class="form-field__full"  name="message" >
+            </p>
+            <p>
+               <input type="checkbox" id="repeat" name="repeat" value="reccuring">
+               daily
+               &nbsp
+               <input type="checkbox" id="repeat1" name="repeat1" value="weekly">
+               weekly
+               &nbsp
+               <input type="checkbox" id="repeat2" name="repeat2" value="monthly">
+               monthly
+            </p>
+            <br>
+            <p>
+               Date:
+               <input type="datetime-local" class="form-field__full" name="date" id="getdat" value="">
+            </p>
+            <br> <br>
+            <p>
+               <input type="submit" class="btn btn-primary btn-lg btn-block" value="Submit">
+            </p>
+         </div>
+      </form>
+      <!-- .grid to attach tiles to -->
+      <main id="grid"></main>
+      <footer>
+         <!-- Include information source -->
+      </footer>
+      <script>
+         window.onload = function() {
+           let date= new Date();
+           let localTime = date.getTime();
+           let localOffset = date.getTimezoneOffset() * 60000;
+           let utc = localTime + localOffset;
+           let target_offset = -7;//PST from UTC 7 hours behind right now, will need to fix for daylight
+           let los_angles = utc+(3600000*target_offset);
+         
+           let year = date.getFullYear();
+           let month = date.getMonth()+1;
+           let day = date.getDate();
+           let  nd = new Date(los_angles);
+           let hours = nd.getHours();
+           let mins = nd.getMinutes();
+         
+           if (day < 10) {
+             day = '0' + day;
+           }
+           if (month < 10) {
+             month = '0' + month;
+           }
+           if (hours < 10) {
+             hours = '0' + hours;
+           }
+           if (mins < 10){
+             mins = '0' + mins;
+           }
+         
+           let formattedDate = year + '-' + month + '-' + day + 'T' + hours +":"+ mins
+           document.getElementById("getdat").value= formattedDate;
+         
+         };  
+         
+      </script> 
+   </body>
 </html>
